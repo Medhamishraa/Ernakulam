@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data Form</title>
+</head>
+<body>
+    <h1>Add User Data</h1>
+    <form id="userForm">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="number" id="age" placeholder="Age" required>
+        <input type="text" id="gst_number" placeholder="GST Number" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const age = document.getElementById('age').value;
+            const gst_number = document.getElementById('gst_number').value;
+
+            try {
+                const response = await fetch('http://localhost:5001/add-user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, age, gst_number })
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+                const result = await response.json();
+                alert(result.message || result.error);
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
